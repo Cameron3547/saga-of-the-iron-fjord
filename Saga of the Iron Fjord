@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Saga of the Iron Fjord</title>
+<style>
+body{margin:0;font-family:system-ui;background:#111;color:#eee}
+#game{max-width:520px;margin:auto;padding:16px}
+.card{background:#1e1e1e;border:2px solid #444;border-radius:14px;padding:14px;margin:12px 0}
+h1,h2{color:#f0c36a}
+button{width:100%;padding:14px;margin:6px 0;border:0;border-radius:12px;background:#8b1e1e;color:white;font-size:17px}
+button:hover{background:#b53030}
+.stat{display:flex;justify-content:space-between}
+.log{max-height:180px;overflow:auto;background:#090909;padding:10px;border-radius:10px;font-size:14px}
+.good{color:#7ee787}.bad{color:#ff7b72}.gold{color:#f0c36a}
+</style>
+</head>
+<body>
+<div id="game"></div>
+
+<script>
+let hero={
+ name:"Eirik",
+ cls:"Raider",
+ level:1,xp:0,gold:10,
+ hp:30,maxHp:30,
+ atk:5,def:2,
+ potions:2,
+ weapon:"Iron Axe"
+};
+
+let enemy=null;
+let log=[];
+
+const quests=[
+ {name:"Raid the Saxon Watchtower", enemy:"Saxon Guard", hp:22, atk:5, def:1, gold:12, xp:10},
+ {name:"Hunt the Fenrir-Wolf", enemy:"Fenrir-Wolf", hp:28, atk:6, def:2, gold:16, xp:14},
+ {name:"Explore the Frozen Barrow", enemy:"Draugr", hp:34, atk:7, def:3, gold:22, xp:20},
+ {name:"Challenge the Jarl's Champion", enemy:"Shield-Brother", hp:42, atk:8, def:4, gold:35, xp:30}
+];
+
+function d(n){return Math.floor(Math.random()*n)+1}
+function add(t,c=""){log.unshift(`<span class="${c}">${t}</span>`); if(log.length>30)log.pop()}
+function render(){
+ document.getElementById("game").innerHTML=`
+ <h1>⚔️ Saga of the Iron Fjord</h1>
+ <div class="card">
+  <h2>${hero.name} the ${hero.cls}</h2>
+  <div class="stat"><b>Level</b><span>${hero.level}</span></div>
+  <div class="stat"><b>HP</b><span>${hero.hp}/${hero.maxHp}</span></div>
+  <div class="stat"><b>Attack</b><span>${hero.atk}</span></div>
+  <div class="stat"><b>Defense</b><span>${hero.def}</span></div>
+  <div class="stat"><b>Gold</b><span>${hero.gold}</span></div>
+  <div class="stat"><b>XP</b><span>${hero.xp}</span></div>
+  <div class="stat"><b>Potions</b><span>${hero.potions}</span></div>
+  <div class="stat"><b>Weapon</b><span>${hero.weapon}</span></div>
+ </div>
+ ${enemy?battleScreen():townScreen()}
+ <div class="card"><h2>Runestones</h2><div class="log">${log.join("<br>")}</div></div>`;
+}
+
+function townScreen(){
+ return `<div class="card">
+ <h2>Longhouse</h2>
+ ${quests.map((q,i)=>`<button onclick="startQuest(${i})">${q.name}</button>`).join("")}
+ <button onclick="rest()">Rest at the Mead Hall - 5 Gold</button>
+ <button onclick="buyPotion()">Buy Healing Potion - 8 Gold</button>
+ <button onclick="upgrade()">Upgrade Axe - 20 Gold</button>
+ </div>`;
+}
+
+function battleScreen(){
+ return `<div class="card">
+ <h2>Battle: ${enemy.name}</h2>
+ <div class="stat"><b>Enemy HP</b><span>${enemy.hp}/${enemy.maxHp}</span></div>
+ <button onclick="attack()">Attack with Axe</button>
+ <button onclick="heavy()">Risky Power Strike</button>
+ <button onclick="potion()">Drink Potion</button>
+ <button onclick="flee()">Flee</button>
+ </div>`;
+}
+
+function startQuest(i){
+ let q=quests[i];
+ enemy={...q,name:q.enemy,maxHp:q.hp};
+ add(`You sail out: ${q.name}.`, "gold");
+ render();
+}
+
+function attack(){
+ let roll=d(20);
+ let dmg=Math.max(1,hero.atk+d(6)-enemy.def);
+ if(roll>=18)dmg*=2;
+ enemy.hp-=dmg;
+ add(`You roll ${roll} and deal ${dmg} damage.`, "good");
+ if(enemy.hp<=0)return win();
+ enemyTurn();
+}
+
+function heavy(){
+ let roll=d(20);
+ if(roll>=11){
+  let dmg=Math.max(2,hero.atk+d(10)-enemy.def);
+  enemy.hp-=dmg;
+  add(`Power strike hits for ${dmg}!`, "good");
+  if(enemy.hp<=0)return win();
+ }else add("Your power strike misses!", "bad");
+ enemyTurn();
+}
+
+function enemyTurn(){
+ let roll=d(20);
+ let dmg=Math.max(1,enemy.atk+d(6)-hero.def);
+ if(roll>=19)dmg*=2;
+ hero.hp-=dmg;
+ add(`${enemy.name} rolls ${roll} and hits you for ${dmg}.`, "bad");
+ if(hero.hp<=0)death();
+ render();
+}
+
+function potion(){
+ if(hero.potions<=0){add("No potions left!", "bad");return render()}
+ hero.potions--;
+ let heal=d(10)+10;
+ hero.hp=Math.min(hero.maxHp,hero.hp+heal);
+ add(`You heal ${heal} HP.`, "good");
+ enemyTurn();
+}
+
+function flee(){
+ add("You flee back to the longship.", "bad");
+ enemy=null;
+ render();
+}
+
+function win(){
+ add(`You defeat ${enemy.name}!`, "gold");
+ hero.gold+=enemy.gold;
+ hero.xp+=enemy.xp;
+ add(`Gained ${enemy.gold} gold and ${enemy.xp} XP.`, "good");
+ enemy=null;
+ while(hero.xp>=hero.level*25){
+  hero.xp-=hero.level*25;
+  hero.level++;
+  hero.maxHp+=8;
+  hero.atk+=2;
+  hero.def+=1;
+  hero.hp=hero.maxHp;
+  add(`Level up! You are now level ${hero.level}.`, "gold");
+ }
+ render();
+}
+
+function death(){
+ add("You fall in battle. Valkyries carry you home. You lose half your gold.", "bad");
+ hero.gold=Math.floor(hero.gold/2);
+ hero.hp=hero.maxHp;
+ enemy=null;
+}
+
+function rest(){
+ if(hero.gold<5)return add("Not enough gold.", "bad"),render();
+ hero.gold-=5; hero.hp=hero.maxHp;
+ add("You rest and recover fully.", "good");
+ render();
+}
+
+function buyPotion(){
+ if(hero.gold<8)return add("Not enough gold.", "bad"),render();
+ hero.gold-=8; hero.potions++;
+ add("Bought a healing potion.", "good");
+ render();
+}
+
+function upgrade(){
+ if(hero.gold<20)return add("Not enough gold.", "bad"),render();
+ hero.gold-=20; hero.atk+=2;
+ hero.weapon="Runed Axe +" + Math.floor((hero.atk-5)/2);
+ add("Your axe is reforged with runes.", "gold");
+ render();
+}
+
+add("Your saga begins in a cold Viking fjord.", "gold");
+render();
+</script>
+</body>
+</html>
