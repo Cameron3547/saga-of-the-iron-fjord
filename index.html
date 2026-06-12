@@ -2,187 +2,163 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Saga of the Iron Fjord</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Hrafn’s Mead Hall</title>
 <style>
-body{margin:0;font-family:system-ui;background:#111;color:#eee}
-#game{max-width:520px;margin:auto;padding:16px}
-.card{background:#1e1e1e;border:2px solid #444;border-radius:14px;padding:14px;margin:12px 0}
-h1,h2{color:#f0c36a}
-button{width:100%;padding:14px;margin:6px 0;border:0;border-radius:12px;background:#8b1e1e;color:white;font-size:17px}
-button:hover{background:#b53030}
-.stat{display:flex;justify-content:space-between}
-.log{max-height:180px;overflow:auto;background:#090909;padding:10px;border-radius:10px;font-size:14px}
-.good{color:#7ee787}.bad{color:#ff7b72}.gold{color:#f0c36a}
+*{box-sizing:border-box}
+body{margin:0;background:#050607;color:#e8dec8;font-family:Georgia,serif}
+header{padding:18px 28px;border-bottom:1px solid #2b2015;background:#090b0c;display:flex;justify-content:space-between}
+.logo{color:#f2c66d;font-weight:900;letter-spacing:2px}
+button{background:#16251d;color:#f2c66d;border:1px solid #685027;border-radius:8px;padding:10px 14px;cursor:pointer}
+button:hover{background:#253c2e}
+.main{display:grid;grid-template-columns:260px 1fr 190px;gap:18px;padding:18px}
+.panel,.chat,.card{background:#0d1010;border:1px solid #30251a;border-radius:14px;padding:14px;box-shadow:0 0 25px #000}
+h1{font-size:48px;margin:20px 0 8px;color:#f2c66d}
+.hero{padding:26px;background:linear-gradient(135deg,#111,#25160d);border-radius:18px;border:1px solid #3e2b18}
+.sub{color:#bfae8e}
+.quest{border:1px solid #29452f;background:#101b14;margin:12px 0;padding:10px;border-radius:10px}
+.badge{font-size:12px;background:#243d2b;color:#8df0a2;padding:3px 6px;border-radius:6px}
+.chat{height:520px;overflow:auto}
+.msg{margin:14px 0;padding:14px;border-radius:12px;line-height:1.45}
+.dm{background:#121212;border:1px solid #333}
+.player{background:#142818;border:1px solid #2d6b39}
+.roll{color:#ffd37a;font-size:13px;float:right}
+.input{display:flex;gap:10px;margin-top:12px}
+input{flex:1;background:#080a0a;color:#eee;border:1px solid #333;border-radius:8px;padding:12px}
+.avatar{font-size:46px;text-align:center;margin:12px}
+.stat{display:flex;justify-content:space-between;margin:8px 0;color:#c9b994}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.card{text-align:center}
+.footer{text-align:center;color:#756b5b;padding:20px}
+@media(max-width:850px){.main{grid-template-columns:1fr}.cards{grid-template-columns:1fr}h1{font-size:34px}}
 </style>
 </head>
 <body>
-<div id="game"></div>
+<header>
+  <div class="logo">ᚺ HRAFN’S MEAD HALL</div>
+  <div><button onclick="newSaga()">New Saga</button></div>
+</header>
+
+<div class="main">
+  <aside class="panel">
+    <h3>Campaign Quests</h3>
+    <div class="quest"><span class="badge">Lv 1</span> Find the Jarl’s stolen rune-ring.</div>
+    <div class="quest"><span class="badge">Lv 2</span> Track the frost-wolf through black pines.</div>
+    <div class="quest"><span class="badge">Lv 3</span> Survive the draugr beneath the longhouse.</div>
+    <h3>Player</h3>
+    <div class="stat"><span>Health</span><b id="hp">20/20</b></div>
+    <div class="stat"><span>Glory</span><b id="glory">0</b></div>
+    <div class="stat"><span>Silver</span><b id="silver">5</b></div>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <h1>Play a Viking Saga Solo</h1>
+      <p class="sub">No DM. No rulebooks. Type what your warrior does, roll fate, and let the skald continue your legend.</p>
+      <div class="cards">
+        <div class="card">⚔️ Raid</div>
+        <div class="card">🛡️ Defend</div>
+        <div class="card">🍺 Brawl</div>
+      </div>
+    </section>
+
+    <section id="chat" class="chat"></section>
+
+    <div class="input">
+      <input id="command" placeholder="What do you do? e.g. I challenge the stranger to a drinking duel" />
+      <button onclick="send()">Send</button>
+      <button onclick="autoPlay()">Autoplay</button>
+    </div>
+  </main>
+
+  <aside class="panel">
+    <h3>Warband</h3>
+    <div class="avatar">🧔‍♂️</div><div class="stat"><span>Eirik</span><b>HP 20</b></div>
+    <div class="avatar">🧝‍♀️</div><div class="stat"><span>Solveig</span><b>HP 18</b></div>
+    <div class="avatar">🐺</div><div class="stat"><span>Fen</span><b>HP 14</b></div>
+  </aside>
+</div>
+
+<div class="footer">Original Viking tavern RPG prototype.</div>
 
 <script>
-let hero={
- name:"Eirik",
- cls:"Raider",
- level:1,xp:0,gold:10,
- hp:30,maxHp:30,
- atk:5,def:2,
- potions:2,
- weapon:"Iron Axe"
-};
-
-let enemy=null;
-let log=[];
-
-const quests=[
- {name:"Raid the Saxon Watchtower", enemy:"Saxon Guard", hp:22, atk:5, def:1, gold:12, xp:10},
- {name:"Hunt the Fenrir-Wolf", enemy:"Fenrir-Wolf", hp:28, atk:6, def:2, gold:16, xp:14},
- {name:"Explore the Frozen Barrow", enemy:"Draugr", hp:34, atk:7, def:3, gold:22, xp:20},
- {name:"Challenge the Jarl's Champion", enemy:"Shield-Brother", hp:42, atk:8, def:4, gold:35, xp:30}
+let hp=20, glory=0, silver=5;
+const chat=document.getElementById("chat");
+const scenes=[
+ "Snow batters the mead hall roof. A hooded stranger drops a rune-carved bone on your table.",
+ "The hearth-fire gutters blue. Somewhere outside, a wolf howls your name.",
+ "A shield-maiden points toward the fjord, where ghost lights dance above a wrecked longship.",
+ "The tavern doors burst open. A wounded scout whispers: 'Draugr under the hill... they march tonight.'"
+];
+const outcomes=[
+ "The hall erupts in cheers. Your name is carved deeper into the saga.",
+ "Your plan works, but not cleanly. Blood hits the floorboards and someone owes someone silver.",
+ "Fate laughs. You slip, stumble, and make the gods very entertained.",
+ "A raven lands nearby, watching like Odin himself is judging your next move.",
+ "Steel flashes. The enemy hesitates. You have one breath to press the advantage."
 ];
 
-function d(n){return Math.floor(Math.random()*n)+1}
-function add(t,c=""){log.unshift(`<span class="${c}">${t}</span>`); if(log.length>30)log.pop()}
-function render(){
- document.getElementById("game").innerHTML=`
- <h1>⚔️ Saga of the Iron Fjord</h1>
- <div class="card">
-  <h2>${hero.name} the ${hero.cls}</h2>
-  <div class="stat"><b>Level</b><span>${hero.level}</span></div>
-  <div class="stat"><b>HP</b><span>${hero.hp}/${hero.maxHp}</span></div>
-  <div class="stat"><b>Attack</b><span>${hero.atk}</span></div>
-  <div class="stat"><b>Defense</b><span>${hero.def}</span></div>
-  <div class="stat"><b>Gold</b><span>${hero.gold}</span></div>
-  <div class="stat"><b>XP</b><span>${hero.xp}</span></div>
-  <div class="stat"><b>Potions</b><span>${hero.potions}</span></div>
-  <div class="stat"><b>Weapon</b><span>${hero.weapon}</span></div>
- </div>
- ${enemy?battleScreen():townScreen()}
- <div class="card"><h2>Runestones</h2><div class="log">${log.join("<br>")}</div></div>`;
+function add(who,text,cls,roll=""){
+ const div=document.createElement("div");
+ div.className="msg "+cls;
+ div.innerHTML=`<b>${who}</b>${roll?`<span class="roll">${roll}</span>`:""}<br>${text}`;
+ chat.appendChild(div);
+ chat.scrollTop=chat.scrollHeight;
 }
 
-function townScreen(){
- return `<div class="card">
- <h2>Longhouse</h2>
- ${quests.map((q,i)=>`<button onclick="startQuest(${i})">${q.name}</button>`).join("")}
- <button onclick="rest()">Rest at the Mead Hall - 5 Gold</button>
- <button onclick="buyPotion()">Buy Healing Potion - 8 Gold</button>
- <button onclick="upgrade()">Upgrade Axe - 20 Gold</button>
- </div>`;
+function update(){
+ document.getElementById("hp").textContent=hp+"/20";
+ document.getElementById("glory").textContent=glory;
+ document.getElementById("silver").textContent=silver;
 }
 
-function battleScreen(){
- return `<div class="card">
- <h2>Battle: ${enemy.name}</h2>
- <div class="stat"><b>Enemy HP</b><span>${enemy.hp}/${enemy.maxHp}</span></div>
- <button onclick="attack()">Attack with Axe</button>
- <button onclick="heavy()">Risky Power Strike</button>
- <button onclick="potion()">Drink Potion</button>
- <button onclick="flee()">Flee</button>
- </div>`;
+function rollSkill(action){
+ const r=Math.ceil(Math.random()*20);
+ let skill="Might";
+ if(/sneak|hide|steal|quiet/i.test(action)) skill="Shadow";
+ if(/talk|charm|sing|lie|boast/i.test(action)) skill="Skaldcraft";
+ if(/drink|brawl|punch|fight|axe|sword/i.test(action)) skill="Battle";
+ if(/look|search|track|listen/i.test(action)) skill="Wisdom";
+ return {r,skill};
 }
 
-function startQuest(i){
- let q=quests[i];
- enemy={...q,name:q.enemy,maxHp:q.hp};
- add(`You sail out: ${q.name}.`, "gold");
- render();
+function dmReply(action){
+ const {r,skill}=rollSkill(action);
+ let text=outcomes[Math.floor(Math.random()*outcomes.length)];
+ if(r===20){glory+=3; silver+=2; text="NAT 20. The gods slam their cups in approval. "+text}
+ else if(r<=3){hp=Math.max(0,hp-4); text="Disaster. You take a hard blow. "+text}
+ else if(r>=12){glory+=1; text="Success. "+text}
+ else {hp=Math.max(0,hp-1); text="Mixed result. "+text}
+ update();
+ add("Runecaster",text+" What do you do?", "dm", `${skill} ${r}`);
 }
 
-function attack(){
- let roll=d(20);
- let dmg=Math.max(1,hero.atk+d(6)-enemy.def);
- if(roll>=18)dmg*=2;
- enemy.hp-=dmg;
- add(`You roll ${roll} and deal ${dmg} damage.`, "good");
- if(enemy.hp<=0)return win();
- enemyTurn();
+function send(){
+ const input=document.getElementById("command");
+ const action=input.value.trim();
+ if(!action)return;
+ add("You",action,"player");
+ input.value="";
+ setTimeout(()=>dmReply(action),450);
 }
 
-function heavy(){
- let roll=d(20);
- if(roll>=11){
-  let dmg=Math.max(2,hero.atk+d(10)-enemy.def);
-  enemy.hp-=dmg;
-  add(`Power strike hits for ${dmg}!`, "good");
-  if(enemy.hp<=0)return win();
- }else add("Your power strike misses!", "bad");
- enemyTurn();
+function autoPlay(){
+ const ideas=[
+  "I raise my axe and demand the stranger speaks truth.",
+  "I search the rune-bone for hidden markings.",
+  "I buy the scout mead and ask what chased him.",
+  "I kick open the door and march into the storm."
+ ];
+ document.getElementById("command").value=ideas[Math.floor(Math.random()*ideas.length)];
+ send();
 }
 
-function enemyTurn(){
- let roll=d(20);
- let dmg=Math.max(1,enemy.atk+d(6)-hero.def);
- if(roll>=19)dmg*=2;
- hero.hp-=dmg;
- add(`${enemy.name} rolls ${roll} and hits you for ${dmg}.`, "bad");
- if(hero.hp<=0)death();
- render();
+function newSaga(){
+ hp=20; glory=0; silver=5; update(); chat.innerHTML="";
+ add("Runecaster",scenes[Math.floor(Math.random()*scenes.length)]+" What do you do?","dm");
 }
-
-function potion(){
- if(hero.potions<=0){add("No potions left!", "bad");return render()}
- hero.potions--;
- let heal=d(10)+10;
- hero.hp=Math.min(hero.maxHp,hero.hp+heal);
- add(`You heal ${heal} HP.`, "good");
- enemyTurn();
-}
-
-function flee(){
- add("You flee back to the longship.", "bad");
- enemy=null;
- render();
-}
-
-function win(){
- add(`You defeat ${enemy.name}!`, "gold");
- hero.gold+=enemy.gold;
- hero.xp+=enemy.xp;
- add(`Gained ${enemy.gold} gold and ${enemy.xp} XP.`, "good");
- enemy=null;
- while(hero.xp>=hero.level*25){
-  hero.xp-=hero.level*25;
-  hero.level++;
-  hero.maxHp+=8;
-  hero.atk+=2;
-  hero.def+=1;
-  hero.hp=hero.maxHp;
-  add(`Level up! You are now level ${hero.level}.`, "gold");
- }
- render();
-}
-
-function death(){
- add("You fall in battle. Valkyries carry you home. You lose half your gold.", "bad");
- hero.gold=Math.floor(hero.gold/2);
- hero.hp=hero.maxHp;
- enemy=null;
-}
-
-function rest(){
- if(hero.gold<5)return add("Not enough gold.", "bad"),render();
- hero.gold-=5; hero.hp=hero.maxHp;
- add("You rest and recover fully.", "good");
- render();
-}
-
-function buyPotion(){
- if(hero.gold<8)return add("Not enough gold.", "bad"),render();
- hero.gold-=8; hero.potions++;
- add("Bought a healing potion.", "good");
- render();
-}
-
-function upgrade(){
- if(hero.gold<20)return add("Not enough gold.", "bad"),render();
- hero.gold-=20; hero.atk+=2;
- hero.weapon="Runed Axe +" + Math.floor((hero.atk-5)/2);
- add("Your axe is reforged with runes.", "gold");
- render();
-}
-
-add("Your saga begins in a cold Viking fjord.", "gold");
-render();
+newSaga();
+document.getElementById("command").addEventListener("keydown",e=>{if(e.key==="Enter")send()});
 </script>
 </body>
 </html>
