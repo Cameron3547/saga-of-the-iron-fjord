@@ -2,362 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hrafn's Mead Hall: Saga of the Nine Realms</title>
+<title>Hrafn's Mead Hall V2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-:root{
---bg:#050607;--panel:#0d1110;--panel2:#131a16;--gold:#f2c66d;--green:#7ef29a;
---red:#ff6b6b;--blue:#78b7ff;--muted:#b8a98b;--border:#3b2d1e;
-}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at top,#17251e,#050607 60%);color:#eadfc6;font-family:Georgia,serif}
+:root{--bg:#050607;--panel:#0d1110;--gold:#f2c66d;--green:#7ef29a;--red:#ff6b6b;--blue:#78b7ff;--muted:#b8a98b;--border:#3b2d1e}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#17251e,#050607 60%);color:#eadfc6;font-family:Georgia,serif}
 header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:#080b0a;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-.logo{color:var(--gold);font-weight:900;letter-spacing:2px}
-button,select,input{background:#101713;color:#eadfc6;border:1px solid #514020;border-radius:8px;padding:9px}
-button{cursor:pointer;color:var(--gold)}
-button:hover{background:#1e3026}
-.grid{display:grid;grid-template-columns:290px 1fr 300px;gap:14px;padding:14px}
-.panel{background:rgba(13,17,16,.96);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 0 22px #000}
-h1,h2,h3{color:var(--gold);margin:8px 0}
-.stat{display:flex;justify-content:space-between;border-bottom:1px solid #211b14;padding:5px 0;color:#d5c4a2}
-.bar{height:9px;background:#1b1b1b;border-radius:20px;overflow:hidden;margin:4px 0 8px}
-.fill{height:100%;background:linear-gradient(90deg,#804,#f55)}
-.fill.stamina{background:linear-gradient(90deg,#263,#7ef29a)}
-.fill.xp{background:linear-gradient(90deg,#542,#f2c66d)}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.tab{font-size:13px}
-.screen{display:none}
-.screen.active{display:block}
-.log{height:440px;overflow:auto;background:#070909;border:1px solid #282018;border-radius:12px;padding:12px}
-.msg{padding:11px;border-radius:10px;margin:10px 0;line-height:1.45}
-.dm{background:#111;border:1px solid #333}
-.good{border-color:#2e7d45;background:#102016}
-.bad{border-color:#7d2e2e;background:#201010}
-.player{border-color:#386d9c;background:#101720}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.card{background:#101612;border:1px solid #332716;border-radius:10px;padding:10px;margin:8px 0}
-.map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.tile{min-height:80px;background:#101410;border:1px solid #392b1c;border-radius:10px;padding:8px;cursor:pointer}
-.tile:hover{outline:2px solid var(--gold)}
-.small{font-size:13px;color:var(--muted)}
-.item{display:flex;justify-content:space-between;gap:10px;background:#0b0e0d;border:1px solid #292018;border-radius:8px;padding:8px;margin:6px 0}
-.badge{background:#263d2b;color:var(--green);padding:2px 6px;border-radius:7px;font-size:12px}
-.danger{color:var(--red)}.gold{color:var(--gold)}.blue{color:var(--blue)}.green{color:var(--green)}
-@media(max-width:950px){.grid{grid-template-columns:1fr}.log{height:360px}.map{grid-template-columns:repeat(2,1fr)}}
+.logo{color:var(--gold);font-weight:900;letter-spacing:2px}button,input{background:#101713;color:#eadfc6;border:1px solid #514020;border-radius:8px;padding:9px}button{cursor:pointer;color:var(--gold)}button:hover{background:#1e3026}
+.grid{display:grid;grid-template-columns:290px 1fr 300px;gap:14px;padding:14px}.panel{background:rgba(13,17,16,.96);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 0 22px #000}
+h1,h2,h3{color:var(--gold);margin:8px 0}.stat{display:flex;justify-content:space-between;border-bottom:1px solid #211b14;padding:5px 0;color:#d5c4a2}
+.bar{height:9px;background:#1b1b1b;border-radius:20px;overflow:hidden;margin:4px 0 8px}.fill{height:100%;background:linear-gradient(90deg,#804,#f55)}.stamina{background:linear-gradient(90deg,#263,#7ef29a)}.xp{background:linear-gradient(90deg,#542,#f2c66d)}
+.tabs,.row{display:flex;gap:8px;flex-wrap:wrap}.screen{display:none}.screen.active{display:block}.log{height:440px;overflow:auto;background:#070909;border:1px solid #282018;border-radius:12px;padding:12px}
+.msg{padding:11px;border-radius:10px;margin:10px 0;line-height:1.45}.dm{background:#111;border:1px solid #333}.good{border-color:#2e7d45;background:#102016}.bad{border-color:#7d2e2e;background:#201010}.player{border-color:#386d9c;background:#101720}
+.card{background:#101612;border:1px solid #332716;border-radius:10px;padding:10px;margin:8px 0}.map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.tile{min-height:80px;background:#101410;border:1px solid #392b1c;border-radius:10px;padding:8px;cursor:pointer}
+.tile:hover{outline:2px solid var(--gold)}.small{font-size:13px;color:var(--muted)}.item{display:flex;justify-content:space-between;gap:10px;background:#0b0e0d;border:1px solid #292018;border-radius:8px;padding:8px;margin:6px 0}.badge{background:#263d2b;color:var(--green);padding:2px 6px;border-radius:7px;font-size:12px}.danger{color:var(--red)}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.map{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
-<header>
-<div class="logo">ᚺ HRAFN'S MEAD HALL: SAGA OF THE NINE REALMS</div>
-<div class="row">
-<button onclick="saveGame()">Save</button>
-<button onclick="loadGame()">Load</button>
-<button onclick="hardReset()">New Saga</button>
-</div>
-</header>
-
+<header><div class="logo">ᚺ HRAFN'S MEAD HALL V2</div><div class="row"><button onclick="saveGame()">Save</button><button onclick="loadGame()">Load</button><button onclick="hardReset()">New Saga</button></div></header>
 <div class="grid">
-<aside class="panel">
-<h3 id="heroName">Eirik Raven-Blood</h3>
-<div class="small" id="heroClass">Class: Berserker</div>
-<div class="stat"><span>Level</span><b id="level"></b></div>
-<div class="stat"><span>Silver</span><b id="silver"></b></div>
-<div class="stat"><span>Glory</span><b id="glory"></b></div>
-<div class="stat"><span>Day</span><b id="day"></b></div>
-<div>Health</div><div class="bar"><div id="hpbar" class="fill"></div></div>
-<div>Stamina</div><div class="bar"><div id="stambar" class="fill stamina"></div></div>
-<div>XP</div><div class="bar"><div id="xpbar" class="fill xp"></div></div>
-<h3>Skills</h3>
-<div id="skills"></div>
-<h3>Factions</h3>
-<div id="factions"></div>
-</aside>
-
-<main class="panel">
-<div class="tabs">
-<button class="tab" onclick="tab('saga')">Saga</button>
-<button class="tab" onclick="tab('map')">World Map</button>
-<button class="tab" onclick="tab('combat')">Combat</button>
-<button class="tab" onclick="tab('quests')">Quests</button>
-<button class="tab" onclick="tab('inventory')">Inventory</button>
-<button class="tab" onclick="tab('town')">Town</button>
-<button class="tab" onclick="tab('ship')">Ship</button>
-<button class="tab" onclick="tab('achievements')">Achievements</button>
+<aside class="panel"><h3 id="heroName"></h3><div id="heroClass" class="small"></div><div class="stat"><span>Level</span><b id="level"></b></div><div class="stat"><span>Silver</span><b id="silver"></b></div><div class="stat"><span>Glory</span><b id="glory"></b></div><div class="stat"><span>Day</span><b id="day"></b></div>Health<div class="bar"><div id="hpbar" class="fill"></div></div>Stamina<div class="bar"><div id="stambar" class="fill stamina"></div></div>XP<div class="bar"><div id="xpbar" class="fill xp"></div></div><h3>Skills</h3><div id="skills"></div><h3>Factions</h3><div id="factions"></div></aside>
+<main class="panel"><div class="tabs"><button onclick="tab('saga')">Saga</button><button onclick="tab('map')">World Map</button><button onclick="tab('combat')">Combat</button><button onclick="tab('quests')">Quests</button><button onclick="tab('inventory')">Inventory</button><button onclick="tab('town')">Town</button><button onclick="tab('ship')">Ship</button><button onclick="tab('achievements')">Achievements</button></div>
+<section id="saga" class="screen active"><h1>The Mead Hall Awaits</h1><div id="log" class="log"></div><div class="row" style="margin-top:10px"><input id="command" style="flex:1" placeholder="Try: go to Hrafnvik, show inventory, rest, shop, seek quest, talk to the jarl..."><button onclick="freeAction()">Do It</button><button onclick="rollEvent()">Random Fate</button></div></section>
+<section id="map" class="screen"><h2>World Map</h2><div id="world" class="map"></div></section>
+<section id="combat" class="screen"><h2>Combat</h2><div id="combatBox"></div><div class="row"><button onclick="attack()">Attack</button><button onclick="powerAttack()">Power Attack</button><button onclick="defend()">Defend</button><button onclick="usePotion()">Drink Potion</button><button onclick="flee()">Flee</button></div></section>
+<section id="quests" class="screen"><h2>Quests</h2><div id="questsBox"></div></section>
+<section id="inventory" class="screen"><h2>Inventory & Gear</h2><div id="gearBox"></div><div id="invBox"></div></section>
+<section id="town" class="screen"><h2>Settlement</h2><div id="townBox"></div><div class="row"><button onclick="rest()">Rest</button><button onclick="shop()">Market</button><button onclick="train()">Train</button><button onclick="hireCompanion()">Hire Companion</button><button onclick="craft()">Craft Gear</button></div></section>
+<section id="ship" class="screen"><h2>Longship</h2><div id="shipBox"></div><div class="row"><button onclick="raid()">Launch Raid</button><button onclick="upgradeShip()">Upgrade Ship</button><button onclick="recruitCrew()">Recruit Crew</button><button onclick="sail()">Sail Unknown Waters</button></div></section>
+<section id="achievements" class="screen"><h2>Achievements</h2><div id="achievementsBox"></div></section></main>
+<aside class="panel"><h3>Current Location</h3><div id="locBox"></div><h3>Active Enemy</h3><div id="enemyBox"></div><h3>Companions</h3><div id="companionsBox"></div><h3>Actions</h3><div class="row"><button onclick="explore()">Explore</button><button onclick="hunt()">Hunt</button><button onclick="seekQuest()">Seek Quest</button><button onclick="bossHunt()">Boss Hunt</button></div></aside>
 </div>
-
-<section id="saga" class="screen active">
-<h1>The Mead Hall Awaits</h1>
-<div class="log" id="log"></div>
-<div class="row" style="margin-top:10px">
-<input id="command" style="flex:1" placeholder="Type your action, boast, threat, prayer, or plan...">
-<button onclick="freeAction()">Do It</button>
-<button onclick="rollEvent()">Random Fate</button>
-</div>
-</section>
-
-<section id="map" class="screen">
-<h2>World Map</h2>
-<div id="world" class="map"></div>
-</section>
-
-<section id="combat" class="screen">
-<h2>Combat</h2>
-<div id="combatBox"></div>
-<div class="row">
-<button onclick="attack()">Attack</button>
-<button onclick="powerAttack()">Power Attack</button>
-<button onclick="defend()">Defend</button>
-<button onclick="usePotion()">Drink Potion</button>
-<button onclick="flee()">Flee</button>
-</div>
-</section>
-
-<section id="quests" class="screen">
-<h2>Quests</h2>
-<div id="questsBox"></div>
-</section>
-
-<section id="inventory" class="screen">
-<h2>Inventory & Gear</h2>
-<div id="gearBox"></div>
-<div id="invBox"></div>
-</section>
-
-<section id="town" class="screen">
-<h2>Settlement</h2>
-<div id="townBox"></div>
-<div class="row">
-<button onclick="rest()">Rest at Mead Hall</button>
-<button onclick="shop()">Visit Market</button>
-<button onclick="train()">Train Skills</button>
-<button onclick="hireCompanion()">Hire Companion</button>
-<button onclick="craft()">Craft Gear</button>
-</div>
-</section>
-
-<section id="ship" class="screen">
-<h2>Longship</h2>
-<div id="shipBox"></div>
-<div class="row">
-<button onclick="raid()">Launch Raid</button>
-<button onclick="upgradeShip()">Upgrade Ship</button>
-<button onclick="recruitCrew()">Recruit Crew</button>
-<button onclick="sail()">Sail Unknown Waters</button>
-</div>
-</section>
-
-<section id="achievements" class="screen">
-<h2>Achievements</h2>
-<div id="achievementsBox"></div>
-</section>
-</main>
-
-<aside class="panel">
-<h3>Current Location</h3>
-<div id="locBox"></div>
-<h3>Active Enemy</h3>
-<div id="enemyBox"></div>
-<h3>Companions</h3>
-<div id="companionsBox"></div>
-<h3>Actions</h3>
-<div class="row">
-<button onclick="explore()">Explore</button>
-<button onclick="hunt()">Hunt</button>
-<button onclick="seekQuest()">Seek Quest</button>
-<button onclick="bossHunt()">Boss Hunt</button>
-</div>
-</aside>
-</div>
-
 <script>
 const names=["Eirik","Astrid","Bjorn","Freydis","Ragnar","Sigrid","Leif","Ingrid","Halfdan","Ylva"];
-const places=[
-["Hrafnvik","starter village","low"],["Blackpine Forest","wild forest","low"],["Frostbite Fjord","icy coast","mid"],["Skullbreak Pass","mountain road","mid"],["Ashen Longhouse","burned ruins","mid"],
-["Draugr Barrow","undead tomb","high"],["Whale-Road Isles","sea islands","mid"],["Jotunscar","giant lands","high"],["Serpent Bay","raider coast","high"],["Temple of Odin","holy site","mid"],
-["Iron Marsh","swamp","mid"],["Volva's Crag","witch cliff","high"],["Nidhogg Hollow","cursed root cavern","boss"],["The Red Jarl's Fort","enemy fortress","high"],["Valaskjalf Gate","mythic threshold","boss"],
-["Silvermarket","trade town","low"],["Stormjaw Harbor","shipyard","mid"],["Ravenwatch Tower","old watchtower","mid"],["Fenrir's Maw","monster den","boss"],["Yggdrasil Shadow","endgame realm","boss"]
-];
-const enemies=[
-["Bandit",18,4,8],["Oathbreaker",22,5,12],["Wolf Pack",20,5,10],["Frost Wolf",28,7,18],["Draugr",32,8,22],["Troll",45,10,35],
-["Sea Reaver",30,7,20],["Jotun Spawn",55,12,50],["Cult Seer",26,9,32],["Lindworm",70,14,75],["Fenrir Shade",95,18,120],["Nidhogg Brood",120,22,180]
-];
-const loot=[
-["Iron Axe","weapon",2,25],["Runed Sword","weapon",4,80],["Bear-Cloak","armor",2,40],["Wolfmail","armor",4,100],["Healing Mead","potion",10,15],
-["Stamina Horn","potion",8,15],["Silver Ring","treasure",0,35],["Dragon Scale","craft",0,120],["Odin Rune","rune",3,200],["Thor Charm","rune",4,230],
-["Jarl's Banner","relic",5,400],["Serpent Fang Spear","weapon",7,500]
-];
-const questTemplates=[
-"Recover the stolen {item} from {place}.","Slay the {enemy} haunting {place}.","Escort a wounded skald through {place}.","Find the lost rune-stone beneath {place}.",
-"Raid {place} before the moon freezes.","Expose the oathbreaker hiding in {place}.","Win glory by surviving three nights in {place}.","Bring peace between rival clans near {place}."
-];
-const achievements=[
-["firstblood","First Blood"],["rich","1000 Silver"],["glorious","100 Glory"],["dragon","Dragon-Slayer"],["king","Sea King"],["myth","Walker of Realms"],["crew","Warband Master"],["craft","Rune-Smith"]
-];
-
-let S={
-name:"Eirik Raven-Blood",class:"Berserker",level:1,xp:0,hp:35,maxHp:35,stamina:20,maxStamina:20,silver:50,glory:0,day:1,
-skills:{Battle:3,Skaldcraft:1,Shadow:1,Wisdom:2,Seafaring:1,Runecraft:0},
-factions:{RavenClan:0,RedJarl:-10,Volvas:0,Traders:0,Gods:0},
-loc:0,inventory:[loot[0],loot[4]],gear:{weapon:loot[0],armor:null,rune:null},companions:[],ship:{name:"Wave-Biter",hull:30,maxHull:30,crew:6,cargo:0,level:1},
-quests:[],done:[],enemy:null,defending:false,ach:{}
-};
-
-function $(id){return document.getElementById(id)}
-function rnd(a){return a[Math.floor(Math.random()*a.length)]}
-function n(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+const places=[["Hrafnvik","starter village","low"],["Blackpine Forest","wild forest","low"],["Frostbite Fjord","icy coast","mid"],["Skullbreak Pass","mountain road","mid"],["Ashen Longhouse","burned ruins","mid"],["Draugr Barrow","undead tomb","high"],["Whale-Road Isles","sea islands","mid"],["Jotunscar","giant lands","high"],["Serpent Bay","raider coast","high"],["Temple of Odin","holy site","mid"],["Iron Marsh","swamp","mid"],["Volva's Crag","witch cliff","high"],["Nidhogg Hollow","cursed root cavern","boss"],["The Red Jarl's Fort","enemy fortress","high"],["Valaskjalf Gate","mythic threshold","boss"],["Silvermarket","trade town","low"],["Stormjaw Harbor","shipyard","mid"],["Ravenwatch Tower","old watchtower","mid"],["Fenrir's Maw","monster den","boss"],["Yggdrasil Shadow","endgame realm","boss"]];
+const enemies=[["Bandit",18,4,8],["Oathbreaker",22,5,12],["Wolf Pack",20,5,10],["Frost Wolf",28,7,18],["Draugr",32,8,22],["Troll",45,10,35],["Sea Reaver",30,7,20],["Jotun Spawn",55,12,50],["Cult Seer",26,9,32],["Lindworm",70,14,75],["Fenrir Shade",95,18,120],["Nidhogg Brood",120,22,180]];
+const loot=[["Iron Axe","weapon",2,25],["Runed Sword","weapon",4,80],["Bear-Cloak","armor",2,40],["Wolfmail","armor",4,100],["Healing Mead","potion",10,15],["Stamina Horn","potion",8,15],["Silver Ring","treasure",0,35],["Dragon Scale","craft",0,120],["Odin Rune","rune",3,200],["Thor Charm","rune",4,230],["Jarl's Banner","relic",5,400],["Serpent Fang Spear","weapon",7,500]];
+const questTemplates=["Recover the stolen {item} from {place}.","Slay the {enemy} haunting {place}.","Escort a wounded skald through {place}.","Find the lost rune-stone beneath {place}.","Raid {place} before the moon freezes.","Expose the oathbreaker hiding in {place}.","Win glory by surviving three nights in {place}.","Bring peace between rival clans near {place}."];
+const achievements=[["firstblood","First Blood"],["rich","1000 Silver"],["glorious","100 Glory"],["dragon","Dragon-Slayer"],["king","Sea King"],["myth","Walker of Realms"],["crew","Warband Master"],["craft","Rune-Smith"]];
+let S={name:"Eirik Raven-Blood",class:"Berserker",level:1,xp:0,hp:35,maxHp:35,stamina:20,maxStamina:20,silver:50,glory:0,day:1,skills:{Battle:3,Skaldcraft:1,Shadow:1,Wisdom:2,Seafaring:1,Runecraft:0},factions:{RavenClan:0,RedJarl:-10,Volvas:0,Traders:0,Gods:0},loc:0,inventory:[loot[0],loot[4]],gear:{weapon:loot[0],armor:null,rune:null},companions:[],ship:{name:"Wave-Biter",hull:30,maxHull:30,crew:6,cargo:0,level:1},quests:[],done:[],enemy:null,defending:false,ach:{}};
+function $(id){return document.getElementById(id)}function rnd(a){return a[Math.floor(Math.random()*a.length)]}function n(min,max){return Math.floor(Math.random()*(max-min+1))+min}function roll(s=20){return n(1,s)}function mod(skill){return S.skills[skill]||0}function weaponPower(){return S.gear.weapon?S.gear.weapon[2]:1}function armorPower(){return S.gear.armor?S.gear.armor[2]:0}function runePower(){return S.gear.rune?S.gear.rune[2]:0}
+function itemPower(it){if(!it)return 0;if(it[1]=="weapon")return it[2]*10;if(it[1]=="armor")return it[2]*9;if(it[1]=="rune")return it[2]*12;if(it[1]=="potion")return it[2]*3;if(it[1]=="relic")return it[2]*15;if(it[1]=="craft")return Math.floor(it[3]/8);if(it[1]=="treasure")return Math.floor(it[3]/10);return it[2]||0}
+function itemText(it){return `${it[0]} <span class="small">${it[1]}</span> <span class="badge">Power ${itemPower(it)}</span>`}
+function findLocationFromText(text){let clean=text.toLowerCase();return places.findIndex(p=>clean.includes(p[0].toLowerCase()))}
 function tab(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');render()}
 function log(t,c="dm"){let d=document.createElement("div");d.className="msg "+c;d.innerHTML=t;$("log").appendChild(d);$("log").scrollTop=$("log").scrollHeight}
-function roll(sides=20){return n(1,sides)}
-function mod(skill){return S.skills[skill]||0}
-function weaponPower(){return S.gear.weapon?S.gear.weapon[2]:1}
-function armorPower(){return S.gear.armor?S.gear.armor[2]:0}
-function runePower(){return S.gear.rune?S.gear.rune[2]:0}
-
 function render(){
-$("heroName").textContent=S.name;$("heroClass").textContent="Class: "+S.class;
-$("level").textContent=S.level;$("silver").textContent=S.silver;$("glory").textContent=S.glory;$("day").textContent=S.day;
+$("heroName").textContent=S.name;$("heroClass").textContent="Class: "+S.class;$("level").textContent=S.level;$("silver").textContent=S.silver;$("glory").textContent=S.glory;$("day").textContent=S.day;
 $("hpbar").style.width=Math.max(0,S.hp/S.maxHp*100)+"%";$("stambar").style.width=Math.max(0,S.stamina/S.maxStamina*100)+"%";$("xpbar").style.width=(S.xp/(S.level*100)*100)+"%";
 $("skills").innerHTML=Object.entries(S.skills).map(([k,v])=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`).join("");
-$("factions").innerHTML=Object.entries(S.factions).map(([k,v])=>`<div class="stat"><span>${k}</span><b class="${v>=0?'green':'danger'}">${v}</b></div>`).join("");
+$("factions").innerHTML=Object.entries(S.factions).map(([k,v])=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`).join("");
 $("locBox").innerHTML=`<div class="card"><b>${places[S.loc][0]}</b><br><span class="small">${places[S.loc][1]} / danger: ${places[S.loc][2]}</span></div>`;
 $("world").innerHTML=places.map((p,i)=>`<div class="tile" onclick="travel(${i})"><b>${p[0]}</b><br><span class="small">${p[1]}</span><br>${i===S.loc?'<span class="badge">Here</span>':''}</div>`).join("");
 $("enemyBox").innerHTML=S.enemy?`<div class="card danger"><b>${S.enemy.name}</b><br>HP ${S.enemy.hp}/${S.enemy.maxHp}<br>Damage ${S.enemy.dmg}</div>`:`<div class="small">No enemy engaged.</div>`;
 $("companionsBox").innerHTML=S.companions.length?S.companions.map(c=>`<div class="item"><span>${c.name} the ${c.role}</span><b>+${c.bonus}</b></div>`).join(""):"<div class='small'>No companions yet.</div>";
 $("questsBox").innerHTML=S.quests.length?S.quests.map((q,i)=>`<div class="card"><b>${q.title}</b><br>${q.text}<br><span class="small">Reward: ${q.reward} silver, ${q.xp} XP</span><br><button onclick="completeQuest(${i})">Attempt Completion</button></div>`).join(""):"<div class='small'>No active quests. Seek one.</div>";
-$("gearBox").innerHTML=`<div class="card"><b>Weapon:</b> ${S.gear.weapon?S.gear.weapon[0]:"None"}<br><b>Armor:</b> ${S.gear.armor?S.gear.armor[0]:"None"}<br><b>Rune:</b> ${S.gear.rune?S.gear.rune[0]:"None"}</div>`;
-$("invBox").innerHTML=S.inventory.map((it,i)=>`<div class="item"><span>${it[0]} <span class="small">${it[1]}</span></span><span><button onclick="equip(${i})">Use</button><button onclick="sell(${i})">Sell</button></span></div>`).join("");
+$("gearBox").innerHTML=`<div class="card"><b>Weapon:</b> ${S.gear.weapon?itemText(S.gear.weapon):"None"}<br><b>Armor:</b> ${S.gear.armor?itemText(S.gear.armor):"None"}<br><b>Rune:</b> ${S.gear.rune?itemText(S.gear.rune):"None"}<br><br><b>Total Gear Power:</b> <span class="badge">${itemPower(S.gear.weapon)+itemPower(S.gear.armor)+itemPower(S.gear.rune)}</span></div>`;
+$("invBox").innerHTML=S.inventory.map((it,i)=>`<div class="item"><span>${itemText(it)}</span><span><button onclick="equip(${i})">Use</button><button onclick="sell(${i})">Sell</button></span></div>`).join("");
 $("townBox").innerHTML=`<div class="card">You are near ${places[S.loc][0]}. Mead halls, smiths, seers, and thieves may be found here.</div>`;
 $("shipBox").innerHTML=`<div class="card"><b>${S.ship.name}</b><br>Hull ${S.ship.hull}/${S.ship.maxHull}<br>Crew ${S.ship.crew}<br>Ship Level ${S.ship.level}<br>Cargo ${S.ship.cargo}</div>`;
 $("combatBox").innerHTML=S.enemy?`<div class="card"><h3>${S.enemy.name}</h3><p>${S.enemy.desc}</p><p>Enemy HP: ${S.enemy.hp}/${S.enemy.maxHp}</p></div>`:"<div class='card'>No battle. Explore, hunt, raid, or boss hunt to find one.</div>";
 $("achievementsBox").innerHTML=achievements.map(a=>`<div class="item"><span>${a[1]}</span><b>${S.ach[a[0]]?'Unlocked':'Locked'}</b></div>`).join("");
 }
-
-function travel(i){
-let cost=Math.abs(i-S.loc)%4+1;if(S.stamina<cost)return log("You are too exhausted to travel.","bad");
-S.stamina-=cost;S.day++;S.loc=i;
-log(`You travel to <b>${places[i][0]}</b>. The road costs ${cost} stamina.`,"player");
-if(Math.random()<.45)rollEvent();render();
-}
-
-function freeAction(){
-let text=$("command").value.trim();if(!text)return;$("command").value="";
-log("<b>You:</b> "+text,"player");
-let skill=/sneak|steal|hide|ambush/i.test(text)?"Shadow":/talk|sing|boast|lie|persuade/i.test(text)?"Skaldcraft":/sail|ship|fjord|raid/i.test(text)?"Seafaring":/rune|magic|pray|god/i.test(text)?"Runecraft":/search|track|study|listen/i.test(text)?"Wisdom":"Battle";
-let r=roll()+mod(skill)+runePower();
-if(r>=22){S.glory+=3;S.xp+=25;log(`A legendary ${skill} result: ${r}. Your action changes the saga. +3 glory, +25 XP.`,"good")}
-else if(r>=14){S.glory++;S.xp+=12;log(`${skill} result: ${r}. Success with a sharp edge. +1 glory, +12 XP.`,"good")}
-else if(r>=8){S.xp+=5;S.hp=Math.max(1,S.hp-2);log(`${skill} result: ${r}. Mixed result. You survive, but pay in blood. +5 XP, -2 HP.`,"dm")}
-else{S.hp=Math.max(1,S.hp-6);log(`${skill} result: ${r}. Fate bites hard. -6 HP.`,"bad")}
-checkLevel();checkAch();render();
-}
-
-function rollEvent(){
-let events=[
-()=>{log("A raven drops a bone charm at your feet. The Gods approve. +1 Gods reputation.","good");S.factions.Gods++},
-()=>{log("A trader offers a strange bargain. You gain silver, but Traders expect a favor. +30 silver, -1 Traders reputation.");S.silver+=30;S.factions.Traders--},
-()=>{spawnEnemy()},
-()=>{let it=rnd(loot);S.inventory.push(it);log(`You find <b>${it[0]}</b> in a mossy chest.`,"good")},
-()=>{log("Old skalds whisper your name. +2 Glory.","good");S.glory+=2},
-()=>{log("A storm batters your camp. -3 stamina, +1 Wisdom.");S.stamina=Math.max(0,S.stamina-3);S.skills.Wisdom++},
-()=>{seekQuest()},
-()=>{log("The Red Jarl's spies mark you. Red Jarl reputation -3.","bad");S.factions.RedJarl-=3}
-];rnd(events)();checkAch();render();
-}
-
-function spawnEnemy(boss=false){
-let base=boss?rnd(enemies.slice(8)):rnd(enemies);
-let scale=S.level;
-S.enemy={name:base[0],maxHp:base[1]+scale*6,hp:base[1]+scale*6,dmg:base[2]+Math.floor(scale/2),xp:base[3]+scale*8,desc:"A dangerous foe stands before you, weapon raised and eyes full of saga-ending intent."};
-log(`A <b class="danger">${S.enemy.name}</b> appears!`,"bad");tab("combat");
-}
-
-function enemyTurn(){
-if(!S.enemy)return;let dmg=Math.max(1,S.enemy.dmg-armorPower()-(S.defending?5:0));S.hp=Math.max(0,S.hp-dmg);S.defending=false;
-log(`${S.enemy.name} strikes you for ${dmg} damage.`,"bad");
-if(S.hp<=0){log("You fall. Valkyries debate whether you are worth carrying. You wake with scars, losing silver and glory.","bad");S.hp=Math.floor(S.maxHp*.55);S.silver=Math.max(0,S.silver-50);S.glory=Math.max(0,S.glory-5);S.enemy=null;tab("saga")}
-}
-
-function attack(){
-if(!S.enemy)return;let dmg=roll(8)+weaponPower()+mod("Battle")+S.companions.reduce((a,c)=>a+c.bonus,0);
-S.enemy.hp-=dmg;log(`You attack for <b>${dmg}</b> damage.`,"player");afterHit();
-}
-function powerAttack(){
-if(!S.enemy||S.stamina<5)return log("Not enough stamina.","bad");S.stamina-=5;
-let hit=roll()+mod("Battle");if(hit>=10){let dmg=roll(14)+weaponPower()*2+mod("Battle");S.enemy.hp-=dmg;log(`Power attack lands for <b>${dmg}</b>!`,"player")}else log("Your power attack misses.","bad");afterHit();
-}
-function defend(){S.defending=true;S.stamina=Math.min(S.maxStamina,S.stamina+3);log("You brace behind your shield. +3 stamina, reduced next damage.","player");enemyTurn();render()}
+function travel(i){let cost=Math.abs(i-S.loc)%4+1;if(S.stamina<cost)return log("You are too exhausted to travel.","bad");S.stamina-=cost;S.day++;S.loc=i;log(`You travel to <b>${places[i][0]}</b>. The road costs ${cost} stamina.`,"player");if(Math.random()<.25)rollEvent();render()}
+function freeAction(){let text=$("command").value.trim();if(!text)return;$("command").value="";log("<b>You:</b> "+text,"player");let lower=text.toLowerCase();
+if(/go to|travel to|walk to|sail to|head to|journey to|move to/.test(lower)){let loc=findLocationFromText(text);if(loc>=0){travel(loc);return}log("You name a place, but no one in the hall knows where that is. Try a known map location.","dm");return}
+if(/inventory|items|gear|equipment|bag/.test(lower)){tab("inventory");log("You check your gear and supplies.","dm");return}
+if(/quest|job|contract|task/.test(lower)){seekQuest();return}
+if(/rest|sleep|heal|recover/.test(lower)){rest();return}
+if(/shop|market|buy|merchant|trade/.test(lower)){shop();return}
+if(/ship|longship|boat|crew|raid|sail/.test(lower)){tab("ship");log("You head toward your longship, where the crew waits by the cold tide.","dm");return}
+if(/attack|fight|strike|kill|slash|stab|axe|sword|smash|charge|duel|brawl/.test(lower)){if(!S.enemy){log("You ready yourself for battle, but there is no enemy in front of you. Explore, hunt, raid, or boss hunt to find trouble.","dm");return}attack();return}
+let skill="Wisdom";if(/sneak|steal|hide|ambush|shadow|quiet/.test(lower))skill="Shadow";else if(/talk|sing|boast|lie|persuade|ask|speak|drink|toast|story/.test(lower))skill="Skaldcraft";else if(/sail|fjord|sea|oar|navigate/.test(lower))skill="Seafaring";else if(/rune|magic|pray|god|odin|thor|freya|curse|blessing/.test(lower))skill="Runecraft";else if(/search|track|study|listen|look|inspect|examine|read/.test(lower))skill="Wisdom";
+let r=roll()+mod(skill)+runePower();if(r>=22){S.glory+=2;S.xp+=18;log(`A legendary ${skill} result: ${r}. Your choice shapes the saga without drawing steel. +2 glory, +18 XP.`,"good")}else if(r>=14){S.glory++;S.xp+=10;log(`${skill} result: ${r}. Success. Your action moves the story forward. +1 glory, +10 XP.`,"good")}else if(r>=8){S.xp+=5;log(`${skill} result: ${r}. Mixed result. You learn something, but the saga grows more complicated. +5 XP.`,"dm")}else{S.stamina=Math.max(0,S.stamina-2);log(`${skill} result: ${r}. Fate resists you. No battle starts, but you lose 2 stamina.`,"bad")}checkLevel();checkAch();render()}
+function rollEvent(){let events=[()=>{log("A raven drops a bone charm at your feet. +1 Gods reputation.","good");S.factions.Gods++},()=>{S.silver+=30;S.factions.Traders--;log("A trader offers a strange bargain. +30 silver, -1 Traders reputation.")},()=>spawnEnemy(),()=>{let it=rnd(loot);S.inventory.push(it);log(`You find <b>${it[0]}</b> ${itemText(it)} in a mossy chest.`,"good")},()=>{S.glory+=2;log("Old skalds whisper your name. +2 Glory.","good")},()=>{S.stamina=Math.max(0,S.stamina-3);S.skills.Wisdom++;log("A storm batters your camp. -3 stamina, +1 Wisdom.")},()=>seekQuest(),()=>{S.factions.RedJarl-=3;log("The Red Jarl's spies mark you. Red Jarl reputation -3.","bad")}];rnd(events)();checkAch();render()}
+function spawnEnemy(boss=false){let base=boss?rnd(enemies.slice(8)):rnd(enemies);let scale=S.level;S.enemy={name:base[0],maxHp:base[1]+scale*6,hp:base[1]+scale*6,dmg:base[2]+Math.floor(scale/2),xp:base[3]+scale*8,desc:"A dangerous foe stands before you, weapon raised and eyes full of saga-ending intent."};log(`A <b class="danger">${S.enemy.name}</b> appears!`,"bad");tab("combat")}
+function enemyTurn(){if(!S.enemy)return;let dmg=Math.max(1,S.enemy.dmg-armorPower()-(S.defending?5:0));S.hp=Math.max(0,S.hp-dmg);S.defending=false;log(`${S.enemy.name} strikes you for ${dmg} damage.`,"bad");if(S.hp<=0){log("You fall. Valkyries debate your worth. You wake scarred, losing silver and glory.","bad");S.hp=Math.floor(S.maxHp*.55);S.silver=Math.max(0,S.silver-50);S.glory=Math.max(0,S.glory-5);S.enemy=null;tab("saga")}}
+function attack(){if(!S.enemy)return;let dmg=roll(8)+weaponPower()+mod("Battle")+Math.floor(itemPower(S.gear.weapon)/15)+S.companions.reduce((a,c)=>a+c.bonus,0);S.enemy.hp-=dmg;log(`You attack for <b>${dmg}</b> damage.`,"player");afterHit()}
+function powerAttack(){if(!S.enemy||S.stamina<5)return log("Not enough stamina.","bad");S.stamina-=5;let hit=roll()+mod("Battle");if(hit>=10){let dmg=roll(14)+weaponPower()*2+mod("Battle")+Math.floor(itemPower(S.gear.weapon)/10);S.enemy.hp-=dmg;log(`Power attack lands for <b>${dmg}</b>!`,"player")}else log("Your power attack misses.","bad");afterHit()}
+function defend(){S.defending=true;S.stamina=Math.min(S.maxStamina,S.stamina+3);log("You brace behind your shield. +3 stamina.","player");enemyTurn();render()}
 function flee(){if(roll()+mod("Shadow")>11){log("You escape into smoke and snow.","good");S.enemy=null;tab("saga")}else{log("You fail to flee.","bad");enemyTurn()}render()}
-function afterHit(){if(S.enemy&&S.enemy.hp<=0){winBattle()}else enemyTurn();render()}
-function winBattle(){
-let e=S.enemy;S.enemy=null;S.xp+=e.xp;S.silver+=n(10,60);S.glory+=n(1,4);
-if(Math.random()<.55){let it=rnd(loot);S.inventory.push(it);log(`Victory! You loot <b>${it[0]}</b>. +${e.xp} XP.`,"good")}else log(`Victory! +${e.xp} XP, silver, and glory.`,"good");
-checkLevel();checkAch();tab("saga");
-}
-
-function usePotion(){
-let i=S.inventory.findIndex(x=>x[1]=="potion");if(i<0)return log("No potion.","bad");
-let p=S.inventory.splice(i,1)[0];if(p[0].includes("Healing"))S.hp=Math.min(S.maxHp,S.hp+p[2]);else S.stamina=Math.min(S.maxStamina,S.stamina+p[2]);
-log(`You drink ${p[0]}.`,"good");render();
-}
-function equip(i){
-let it=S.inventory[i];if(["weapon","armor","rune"].includes(it[1])){S.gear[it[1]]=it;log(`Equipped ${it[0]}.`,"good")}
-else if(it[1]=="potion"){S.inventory.splice(i,1);S.hp=Math.min(S.maxHp,S.hp+it[2]);log(`Used ${it[0]}.`,"good")}
-else log("You cannot equip that, but it may be sold or used in crafting.");render();
-}
+function afterHit(){if(S.enemy&&S.enemy.hp<=0)winBattle();else enemyTurn();render()}
+function winBattle(){let e=S.enemy;S.enemy=null;S.xp+=e.xp;S.silver+=n(10,60);S.glory+=n(1,4);if(Math.random()<.55){let it=rnd(loot);S.inventory.push(it);log(`Victory! You loot ${itemText(it)}. +${e.xp} XP.`,"good")}else log(`Victory! +${e.xp} XP, silver, and glory.`,"good");checkLevel();checkAch();tab("saga")}
+function usePotion(){let i=S.inventory.findIndex(x=>x[1]=="potion");if(i<0)return log("No potion.","bad");let p=S.inventory.splice(i,1)[0];if(p[0].includes("Healing"))S.hp=Math.min(S.maxHp,S.hp+p[2]);else S.stamina=Math.min(S.maxStamina,S.stamina+p[2]);log(`You drink ${p[0]}.`,"good");render()}
+function equip(i){let it=S.inventory[i];if(["weapon","armor","rune"].includes(it[1])){S.gear[it[1]]=it;log(`Equipped ${itemText(it)}.`,"good")}else if(it[1]=="potion"){S.inventory.splice(i,1);S.hp=Math.min(S.maxHp,S.hp+it[2]);log(`Used ${itemText(it)}.`,"good")}else log("You cannot equip that, but it may be sold or used in crafting.");render()}
 function sell(i){let it=S.inventory.splice(i,1)[0];S.silver+=it[3];log(`Sold ${it[0]} for ${it[3]} silver.`,"good");render()}
-
-function seekQuest(){
-let place=rnd(places)[0], enemy=rnd(enemies)[0], item=rnd(loot)[0];
-let text=rnd(questTemplates).replace("{place}",place).replace("{enemy}",enemy).replace("{item}",item);
-let q={title:"Saga Task "+(S.quests.length+1),text,reward:n(60,180),xp:n(35,120),skill:rnd(["Battle","Wisdom","Skaldcraft","Shadow","Seafaring","Runecraft"])};
-S.quests.push(q);log(`New quest: <b>${q.text}</b>`,"good");render();
-}
-function completeQuest(i){
-let q=S.quests[i], r=roll()+mod(q.skill)+Math.floor(S.glory/20);
-if(r>=13){S.silver+=q.reward;S.xp+=q.xp;S.glory+=4;S.done.push(q);S.quests.splice(i,1);log(`Quest completed using ${q.skill}! +${q.reward} silver, +${q.xp} XP, +4 glory.`,"good")}
-else{S.hp=Math.max(1,S.hp-5);log(`Quest attempt failed. ${q.skill} roll ${r}. -5 HP.`,"bad")}
-checkLevel();checkAch();render();
-}
-
+function seekQuest(){let place=rnd(places)[0],enemy=rnd(enemies)[0],item=rnd(loot)[0];let text=rnd(questTemplates).replace("{place}",place).replace("{enemy}",enemy).replace("{item}",item);let q={title:"Saga Task "+(S.quests.length+1),text,reward:n(60,180),xp:n(35,120),skill:rnd(["Battle","Wisdom","Skaldcraft","Shadow","Seafaring","Runecraft"])};S.quests.push(q);log(`New quest: <b>${q.text}</b>`,"good");render()}
+function completeQuest(i){let q=S.quests[i],r=roll()+mod(q.skill)+Math.floor(S.glory/20)+Math.floor((itemPower(S.gear.weapon)+itemPower(S.gear.armor)+itemPower(S.gear.rune))/50);if(r>=13){S.silver+=q.reward;S.xp+=q.xp;S.glory+=4;S.done.push(q);S.quests.splice(i,1);log(`Quest completed using ${q.skill}! +${q.reward} silver, +${q.xp} XP, +4 glory.`,"good")}else{S.hp=Math.max(1,S.hp-5);log(`Quest attempt failed. ${q.skill} roll ${r}. -5 HP.`,"bad")}checkLevel();checkAch();render()}
 function rest(){let cost=20;if(S.silver<cost)return log("Not enough silver.");S.silver-=cost;S.hp=S.maxHp;S.stamina=S.maxStamina;S.day++;log("You rest, drink, boast, and heal fully.","good");render()}
-function shop(){let it=rnd(loot), price=it[3]+n(5,40);if(S.silver>=price){S.silver-=price;S.inventory.push(it);log(`Bought ${it[0]} for ${price} silver.`,"good")}else log(`A merchant offers ${it[0]} for ${price}, but you lack silver.`,"bad");render()}
-function train(){let skill=rnd(Object.keys(S.skills)), cost=50+S.skills[skill]*25;if(S.silver<cost)return log(`Training ${skill} costs ${cost} silver.`);S.silver-=cost;S.skills[skill]++;log(`You train ${skill}. It rises to ${S.skills[skill]}.`,"good");render()}
-function hireCompanion(){let cost=80+S.companions.length*60;if(S.silver<cost)return log(`A warrior asks ${cost} silver to join.`,"bad");
-S.silver-=cost;let c={name:rnd(names),role:rnd(["Shieldmaiden","Skald","Hunter","Rune-Seer","Axeman","Sailor"]),bonus:n(1,4)};S.companions.push(c);log(`${c.name} the ${c.role} joins your warband.`,"good");checkAch();render()}
-function craft(){
-let mats=S.inventory.filter(x=>x[1]=="craft"||x[1]=="rune");if(!mats.length)return log("You need rare materials.");
-S.inventory.push(["Saga-Forged Axe","weapon",6+n(0,4),300]);S.ach.craft=true;log("You forge a Saga-Forged Axe from rare materials.","good");render();
-}
-
-function raid(){
-if(S.ship.crew<5||S.stamina<5)return log("You need crew and stamina to raid.","bad");S.stamina-=5;
-let r=roll()+mod("Seafaring")+S.ship.level+Math.floor(S.ship.crew/5);
-if(r>=15){let gain=n(120,350);S.silver+=gain;S.glory+=8;S.factions.RavenClan+=3;S.factions.RedJarl-=2;log(`Raid success! +${gain} silver, +8 glory.`,"good")}
-else{S.ship.hull=Math.max(1,S.ship.hull-n(5,15));S.hp=Math.max(1,S.hp-4);log("Raid turns bloody. Ship damaged and you are wounded.","bad")}
-checkAch();render();
-}
+function shop(){let it=rnd(loot),price=it[3]+n(5,40);if(S.silver>=price){S.silver-=price;S.inventory.push(it);log(`Bought ${itemText(it)} for ${price} silver.`,"good")}else log(`A merchant offers ${itemText(it)} for ${price}, but you lack silver.`,"bad");render()}
+function train(){let skill=rnd(Object.keys(S.skills)),cost=50+S.skills[skill]*25;if(S.silver<cost)return log(`Training ${skill} costs ${cost} silver.`);S.silver-=cost;S.skills[skill]++;log(`You train ${skill}. It rises to ${S.skills[skill]}.`,"good");render()}
+function hireCompanion(){let cost=80+S.companions.length*60;if(S.silver<cost)return log(`A warrior asks ${cost} silver to join.`,"bad");S.silver-=cost;let c={name:rnd(names),role:rnd(["Shieldmaiden","Skald","Hunter","Rune-Seer","Axeman","Sailor"]),bonus:n(1,4)};S.companions.push(c);log(`${c.name} the ${c.role} joins your warband.`,"good");checkAch();render()}
+function craft(){let mats=S.inventory.filter(x=>x[1]=="craft"||x[1]=="rune");if(!mats.length)return log("You need rare materials.");let it=["Saga-Forged Axe","weapon",6+n(0,4),300];S.inventory.push(it);S.ach.craft=true;log(`You forge ${itemText(it)} from rare materials.`,"good");render()}
+function raid(){if(S.ship.crew<5||S.stamina<5)return log("You need crew and stamina to raid.","bad");S.stamina-=5;let r=roll()+mod("Seafaring")+S.ship.level+Math.floor(S.ship.crew/5);if(r>=15){let gain=n(120,350);S.silver+=gain;S.glory+=8;S.factions.RavenClan+=3;S.factions.RedJarl-=2;log(`Raid success! +${gain} silver, +8 glory.`,"good")}else{S.ship.hull=Math.max(1,S.ship.hull-n(5,15));S.hp=Math.max(1,S.hp-4);log("Raid turns bloody. Ship damaged and you are wounded.","bad")}checkAch();render()}
 function upgradeShip(){let cost=150*S.ship.level;if(S.silver<cost)return log(`Upgrade costs ${cost} silver.`);S.silver-=cost;S.ship.level++;S.ship.maxHull+=15;S.ship.hull=S.ship.maxHull;log("Your longship grows stronger.","good");render()}
 function recruitCrew(){let cost=25;if(S.silver<cost)return log("Not enough silver.");S.silver-=cost;S.ship.crew++;log("A new oarsman joins your crew.","good");checkAch();render()}
 function sail(){let r=roll()+mod("Seafaring")+S.ship.level;if(r>13){let i=n(0,places.length-1);S.loc=i;log(`You sail through fog and reach ${places[i][0]}.`,"good")}else{S.ship.hull=Math.max(1,S.ship.hull-8);log("Storms hammer the hull. -8 ship hull.","bad")}render()}
-
-function explore(){S.stamina=Math.max(0,S.stamina-2);rollEvent();render()}
-function hunt(){if(S.stamina<3)return log("Too tired to hunt.");S.stamina-=3;if(Math.random()<.6)spawnEnemy();else{S.silver+=20;log("You hunt elk and sell the meat. +20 silver.","good")}render()}
-function bossHunt(){let needed=S.level>=5||S.glory>=40;if(!needed)return log("You need level 5 or 40 glory before boss hunting.","bad");spawnEnemy(true);render()}
-
-function checkLevel(){
-while(S.xp>=S.level*100){S.xp-=S.level*100;S.level++;S.maxHp+=8;S.maxStamina+=4;S.hp=S.maxHp;S.stamina=S.maxStamina;let skill=rnd(Object.keys(S.skills));S.skills[skill]++;log(`LEVEL UP! You are level ${S.level}. ${skill} improves.`,"good")}
-}
-function checkAch(){
-if(S.glory>=1)S.ach.firstblood=true;if(S.silver>=1000)S.ach.rich=true;if(S.glory>=100)S.ach.glorious=true;
-if(S.ship.level>=5)S.ach.king=true;if(S.level>=10)S.ach.myth=true;if(S.companions.length>=5)S.ach.crew=true;
-}
-function saveGame(){localStorage.setItem("vikingInsaneSave",JSON.stringify(S));log("Game saved.","good")}
-function loadGame(){let x=localStorage.getItem("vikingInsaneSave");if(x){S=JSON.parse(x);log("Game loaded.","good");render()}else log("No save found.","bad")}
-function hardReset(){localStorage.removeItem("vikingInsaneSave");location.reload()}
-
+function explore(){S.stamina=Math.max(0,S.stamina-2);rollEvent();render()}function hunt(){if(S.stamina<3)return log("Too tired to hunt.");S.stamina-=3;if(Math.random()<.6)spawnEnemy();else{S.silver+=20;log("You hunt elk and sell the meat. +20 silver.","good")}render()}function bossHunt(){if(!(S.level>=5||S.glory>=40))return log("You need level 5 or 40 glory before boss hunting.","bad");spawnEnemy(true);render()}
+function checkLevel(){while(S.xp>=S.level*100){S.xp-=S.level*100;S.level++;S.maxHp+=8;S.maxStamina+=4;S.hp=S.maxHp;S.stamina=S.maxStamina;let skill=rnd(Object.keys(S.skills));S.skills[skill]++;log(`LEVEL UP! You are level ${S.level}. ${skill} improves.`,"good")}}
+function checkAch(){if(S.glory>=1)S.ach.firstblood=true;if(S.silver>=1000)S.ach.rich=true;if(S.glory>=100)S.ach.glorious=true;if(S.ship.level>=5)S.ach.king=true;if(S.level>=10)S.ach.myth=true;if(S.companions.length>=5)S.ach.crew=true}
+function saveGame(){localStorage.setItem("vikingInsaneSaveV2",JSON.stringify(S));log("Game saved.","good")}function loadGame(){let x=localStorage.getItem("vikingInsaneSaveV2");if(x){S=JSON.parse(x);log("Game loaded.","good");render()}else log("No save found.","bad")}function hardReset(){localStorage.removeItem("vikingInsaneSaveV2");location.reload()}
+$("command").addEventListener("keydown",e=>{if(e.key==="Enter")freeAction()});
 log("You sit in Hrafn's Mead Hall as thunder rolls above the fjord. A one-eyed wanderer offers you a black rune and says: <b>'Make a saga worth stealing.'</b>");
-for(let i=0;i<3;i++)seekQuest();
-render();
+for(let i=0;i<3;i++)seekQuest();render();
 </script>
 </body>
 </html>
