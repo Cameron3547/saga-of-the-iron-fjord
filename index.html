@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hrafn's Mead Hall V3</title>
+<title>Hrafn's Mead Hall</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 :root{--bg:#050607;--panel:#0d1110;--gold:#f2c66d;--green:#7ef29a;--red:#ff6b6b;--blue:#78b7ff;--muted:#b8a98b;--border:#3b2d1e}
@@ -20,7 +20,7 @@ h1,h2,h3{color:var(--gold);margin:8px 0}.stat{display:flex;justify-content:space
 </style>
 </head>
 <body>
-<header><div class="logo">ᚺ HRAFN'S MEAD HALL V3</div><div class="row"><button onclick="saveGame()">Save</button><button onclick="loadGame()">Load</button><button onclick="hardReset()">New Saga</button></div></header>
+<header><div class="logo">ᚺ HRAFN'S MEAD HALL</div><div class="row"><button onclick="saveGame()">Save</button><button onclick="loadGame()">Load</button><button onclick="hardReset()">New Saga</button></div></header>
 <div class="grid">
 <aside class="panel"><h3 id="heroName"></h3><div id="heroClass" class="small"></div><div class="stat"><span>Level</span><b id="level"></b></div><div class="stat"><span>Silver</span><b id="silver"></b></div><div class="stat"><span>Glory</span><b id="glory"></b></div><div class="stat"><span>Day</span><b id="day"></b></div>Health<div class="bar"><div id="hpbar" class="fill"></div></div>Stamina<div class="bar"><div id="stambar" class="fill stamina"></div></div>XP<div class="bar"><div id="xpbar" class="fill xp"></div></div><h3>Skills</h3><div id="skills"></div><h3>Factions</h3><div id="factions"></div></aside>
 <main class="panel"><div class="tabs"><button onclick="tab('saga')">Saga</button><button onclick="tab('map')">World Map</button><button onclick="tab('combat')">Combat</button><button onclick="tab('quests')">Quests</button><button onclick="tab('inventory')">Inventory</button><button onclick="tab('town')">Town</button><button onclick="tab('ship')">Ship</button><button onclick="tab('achievements')">Achievements</button></div>
