@@ -41,6 +41,43 @@ const places=[["Hrafnvik","starter village","low"],["Blackpine Forest","wild for
 const enemies=[["Bandit",18,4,8],["Oathbreaker",22,5,12],["Wolf Pack",20,5,10],["Frost Wolf",28,7,18],["Draugr",32,8,22],["Troll",45,10,35],["Sea Reaver",30,7,20],["Jotun Spawn",55,12,50],["Cult Seer",26,9,32],["Lindworm",70,14,75],["Fenrir Shade",95,18,120],["Nidhogg Brood",120,22,180]];
 const loot=[["Iron Axe","weapon",2,25],["Runed Sword","weapon",4,80],["Bear-Cloak","armor",2,40],["Wolfmail","armor",4,100],["Healing Mead","potion",10,15],["Stamina Horn","potion",8,15],["Silver Ring","treasure",0,35],["Dragon Scale","craft",0,120],["Odin Rune","rune",3,200],["Thor Charm","rune",4,230],["Jarl's Banner","relic",5,400],["Serpent Fang Spear","weapon",7,500]];
 const marketStock=[["Healing Mead","potion",10,35],["Stamina Horn","potion",8,30],["Iron Axe","weapon",2,90],["Bear-Cloak","armor",2,110],["Runed Sword","weapon",4,260],["Wolfmail","armor",4,320],["Odin Rune","rune",3,450],["Thor Charm","rune",4,520]];
+  const weaponTypes=["Axe","Sword","Seax","Spear","Hammer","Mace","Dagger","Great Axe","War Pick","Hook Blade"];
+const weaponPrefixes=["Iron","Bone","Ashwood","Frost","Storm","Blood","Raven","Wolf","Serpent","Dragon","Runed","Blacksteel","Moonlit","Jarl's","Odin-Blessed","Thor-Forged","Draugr","Jotun","Berserker","Kingmaker"];
+const weaponSuffixes=["of Hrafnvik","of Blackpine","of Frostbite Fjord","of Skullbreak Pass","of the Ashen Hall","of the Barrow","of the Whale-Road","of Jotunscar","of Serpent Bay","of Odin's Temple","of the Iron Marsh","of the Volva","of Nidhogg","of the Red Jarl","of Valaskjalf","of Silvermarket","of Stormjaw","of Ravenwatch","of Fenrir","of Yggdrasil"];
+const rarityTiers=[
+ ["Common",1,1],
+ ["Uncommon",1.25,3],
+ ["Rare",1.6,6],
+ ["Epic",2.1,10],
+ ["Legendary",3,18],
+ ["Mythic",4,30]
+];
+
+function generateWeapon(regionIndex){
+ let region=places[regionIndex]||rnd(places);
+ let type=rnd(weaponTypes);
+ let prefix=rnd(weaponPrefixes);
+ let suffix=weaponSuffixes[regionIndex%weaponSuffixes.length];
+ let rarity=rnd(rarityTiers);
+
+ let danger=region[2];
+ let dangerBonus=danger=="boss"?8:danger=="high"?5:danger=="mid"?3:1;
+ let base=n(1,5)+dangerBonus+Math.floor(S.level/2);
+ let power=Math.max(1,Math.floor(base*rarity[1]));
+ let value=30+(power*35)+rarity[2]*20;
+
+ return [`${rarity[0]} ${prefix} ${type} ${suffix}`,"weapon",power,value];
+}
+
+function generateRegionalArmory(){
+ let all=[];
+ for(let r=0;r<places.length;r++){
+   for(let i=0;i<50;i++){
+     all.push(generateWeapon(r));
+   }
+ }
+ return all;
+}
 const questTemplates=["Recover the stolen {item} from {place}.","Slay the {enemy} haunting {place}.","Escort a wounded skald through {place}.","Find the lost rune-stone beneath {place}.","Raid {place} before the moon freezes.","Expose the oathbreaker hiding in {place}.","Win glory by surviving three nights in {place}.","Bring peace between rival clans near {place}."];
 const achievements=[["firstblood","First Blood"],["rich","1000 Silver"],["glorious","100 Glory"],["dragon","Dragon-Slayer"],["king","Sea King"],["myth","Walker of Realms"],["crew","Warband Master"],["craft","Rune-Smith"]];
 let S={name:"Eirik Raven-Blood",class:"Berserker",level:1,xp:0,hp:35,maxHp:35,stamina:20,maxStamina:20,silver:50,glory:0,day:1,skills:{Battle:3,Skaldcraft:1,Shadow:1,Wisdom:2,Seafaring:1,Runecraft:0},factions:{RavenClan:0,RedJarl:-10,Volvas:0,Traders:0,Gods:0},loc:0,inventory:[loot[0],loot[4]],gear:{weapon:loot[0],armor:null,rune:null},companions:[],ship:{name:"Wave-Biter",hull:30,maxHull:30,crew:6,cargo:0,level:1},quests:[],done:[],enemy:null,defending:false,ach:{}};
